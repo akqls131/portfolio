@@ -14,9 +14,45 @@
 
 <style>
 	.bar {overflow:hidden;border-radius:100px;width:100px;height:100px;border-width:30px;border-color:pink;border-style:solid;}
+	circle {fill:none;stroke-width: 3;}
+	.circle2 {position:relative;width:108px;height:94px;}
+	.circle2 .bar {position: absolute;top:0;left:0;}
+	.circle2 .bar_bg {position: absolute;top:0;left:0;opacity:.1}
+	.circle2 .text {position:absolute; top:34%;left:0;display:block;width:100%;text-align:center;}
+	.circle2 .no:after {content:'%';}
 </style>
 
 <div class="bar"><span class="text">HTML</span></div>
+
+
+<div class="circle2">
+	<svg>
+		<path d="M 50,50 m 0,-47 a 47,47 0 1 1 0,94 a 47,47 0 1 1 0,-94" stroke="#FFEA82" stroke-width="6" fill-opacity="0" style="stroke-dasharray: 295,295;stroke-dashoffset: 295;" class="bar"></path>	
+		<path d="M 50,50 m 0,-47 a 47,47 0 1 1 0,94 a 47,47 0 1 1 0,-94" stroke="#FFEA82" stroke-width="6" fill-opacity="0" class="bar_bg"></path>	
+	</svg>
+	<div class="text">
+		참여도<br>
+		<span class="no">80</span>
+	</div>
+</div>
+<script>
+	var $no = $('.circle2 .no').text();
+	$('.bar').animate({'stroke-dashoffset':295-(295*$no/100)},300);
+	
+</script>
+
+
+작업물
+pc, mobile, 반응형, 시스템
+
+리스트형식
+약식 코멘트 ()
+
+
+코코와
+브릭스 (시스템)
+곰티비-스포츠관
+
 
 </body>
 </html>
