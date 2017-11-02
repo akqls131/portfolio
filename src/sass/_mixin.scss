@@ -1,0 +1,97 @@
+@charset "UTF-8";
+
+
+@mixin bg($filenm:null, $repeat:no-repeat, $bgpos:0 0, $bgsize:null, $bgcolor:null){
+	background:$bgcolor url($url + $filenm) $repeat $bgpos;
+
+	@if $bgsize != null {
+		background-size:$bgsize;
+	}
+}
+
+
+@mixin size($width:null, $height: null) {
+	width: $width;
+	height: $height;
+}
+
+@mixin ellipsis {
+	overflow:hidden;
+	white-space:nowrap;
+	text-overflow:ellipsis;
+}
+
+@mixin clearEllipsis {
+  white-space:initial;
+  text-overflow:initial
+}
+
+@mixin clearFix {
+  clear:both;
+  display:block;
+  content:"";
+}
+
+@mixin container {
+  margin:0 auto;
+  width: $pcSize;
+
+  @include respond-to(max-pc) {
+	 width: 100%;
+	}
+}
+
+@mixin ft0 {
+	font-size: 0;
+	text-indent:-9999px;
+}
+
+@mixin mainmore {
+    font-size: 12px;
+    font-weight: bold;
+    color:$pointColor;
+
+    .ico {
+      display: inline-block;
+      margin-left:6px;
+      background: url($url + 'sprite.png') no-repeat;
+      @include ico_arrow;
+    }
+}
+
+@mixin modalBg {
+  display:block;
+  position: fixed;
+  top:0;
+  left:0;
+  z-index:9;
+  width:100%;
+  height:100%;
+  background-color: rgba(0,0,0,.6);
+}
+
+@function calcRem($size) {
+	$remSize: $size / $defFontsize;
+	@return #{$remSize}rem;
+}
+
+// mediaquery
+@mixin respond-to($media) {
+  @if $media == mobile {
+    @media only screen and (max-width: $tabletSize - 1) { @content; }
+  }
+  @else if $media == tablet {
+    @media only screen and (min-width: $tabletSize) and (max-width: $pcSize - 1) { @content; }
+  }
+  @else if $media == pc {
+    @media only screen and (min-width: $pcSize) { @content; }
+  }
+	@else if $media == max-pc {
+    @media only screen and (max-width: $pcSize - 1) { @content; }
+	}
+	@else if $media == min-tablet {
+    @media only screen and (min-width: $tabletSize) { @content; }
+	}
+}
+
+

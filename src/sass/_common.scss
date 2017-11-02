@@ -1,0 +1,131 @@
+@charset "UTF-8";
+
+@import "variable";
+
+
+body {
+	background: #efefef;
+	&.webview {
+		.content {
+			padding-top:0;
+			min-height:0;
+		}
+	}
+}
+
+
+.tab-tit {
+	position: relative; 
+	background: #fff;
+
+	ul {
+		position: relative; overflow: hidden;
+
+		li {
+			float: left; 
+			width:(100% / 6);
+
+			a {					
+				overflow: hidden;
+				display: table;
+				width: 100%;
+				text-align: center;
+				span {
+					display: table-cell;
+					height:50px;
+					vertical-align: middle;
+					text-align: center;
+				}
+			}
+		}
+	}
+}
+.diamond {
+	position: absolute; 
+	top:0; 
+	border-style:solid; 
+	transition : background-color .5s, border-color .5s, transform .5s;
+	width:(100% / 6);
+	height:50px;
+	box-sizing:border-box;
+	&.t1 {border-color:#aaa; background:none;}
+	&.t2 {border-color:#F9D213; background:none;}
+	&.t3 {border-color:#7672CC; background:none;}
+	&.t4 {border-color:#FF9F82; background:none;}
+	&.on {transform:rotate(45deg);}
+}
+
+.pflist {
+	padding:0 2%;
+	&__item {
+		overflow: hidden;
+		margin:20px 0;;
+		padding:20px;
+		border:1px solid #000;
+		background:#fff;
+	}
+	&__img {
+		float: left;
+	}
+	&__text {
+		float: left;
+		margin-left:20px;
+		.cate {
+			span {
+				display: inline-block;
+				padding:2px 4px;
+				border:1px solid #000; border-radius:3px;
+				font-size:12px; color: #fff;
+			}
+			.device {
+				margin-right:5px;	
+				background: #434343;
+			}
+			.work-ty {
+				color: #000;
+				background: #ddd;
+
+				&.w {background: #fff;}
+				&.g {background: #ddd;}
+			}
+		} //cate
+		.title {
+			margin: 15px 0 15px 0;
+			font-size:27px;
+			line-height:1.1em;
+		}
+		.btm {
+			overflow:hidden;
+			margin-top: 25px;
+		}
+		.date {
+			margin-top: 43px;
+			float: right;
+		}
+		.rate {
+			position:relative;
+			float: left;
+			width:64px; height:64px;
+			.bar {
+				position:absolute; 
+				top:0; left:0;
+			}
+			.bar_bg {
+				position:absolute; top:0; left:0;
+				opacity:.1
+			}
+			&__text {
+				position:absolute; top:30%; left:0;
+				display:block;
+				width:100%;
+				text-align:center;
+				font-size:13px;
+				line-height:1.2em;
+			}
+			&__no {
+				font-weight:bold;
+				&:after {content:'%';}
+			}
+		} // rate
+	} // __text
+}

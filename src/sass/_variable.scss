@@ -1,0 +1,28 @@
+@charset "UTF-8";
+
+@import 'mixin';
+
+// $url : 'http://i.kocowa.tv/ui/img/';
+$url : 'http://i.kocowa.jp/ui/img/';
+// $url : '../images/';
+$spriteimg : 'sprite.png';
+
+// FONT
+$defaultColor : #333;
+$pointColor : #f03c55;
+$pointColor2 : #4b556e;
+$defFontsize : 14px;
+$defFontsize-m : 13px;
+$defLineHeight : 1.5em;
+$defFontColor : #333;
+$fontfamily: "Hiragino Kaku Gothic Pro","ヒラギノ角ゴ Pro W3","メイリオ", Meiryo,"ＭＳ Ｐゴシック","MS PGothic",arial,sans-serif !default;
+$placeholder : #bbb;
+$placeholder-bg:#fff;
+$selectionBg :#f4b3bc;
+
+// media
+$mobileSize : 320px;
+$tabletSize : 768px;
+$pcSize : 1100px;
+
+

@@ -1,0 +1,45 @@
+@charset "UTF-8";
+
+@import 'variable';
+
+/* reset */
+html, body, header, footer, nav, section, article, aside, h1, h2, h3, h4, h5, h6, p, ul, ol, li, dl, dt, dd, form, fieldset, legend, caption, blockquote, input, button, select, textarea, button {margin:0; padding:0;}
+html,body {min-width:320px; height:100%; text-align:left; border:0 none;}
+html {
+    font-family:$fontfamily; 
+    font-size:$defFontsize; 
+    line-height:$defLineHeight; 
+    color:$defFontColor;
+    @include respond-to(mobile){
+        font-size:$defFontsize-m;
+    }
+    @include respond-to(pc) {
+        // min-width:1220px;
+    }
+}
+header, footer, nav, section, article, aside {display:block;}
+ul, ol {list-style-type:none;}
+fieldset {border:none;}
+legend {display:none;}
+table {table-layout:fixed; border-collapse:collapse; border-spacing:0;}
+table caption {line-height:0; font-size:0;}
+address,em,i {font-style:normal;}
+ruby rt {font-size:1em;}
+hr {display:none;}
+img {border:0; vertical-align:top;}
+a {text-decoration:none; outline:none; color:$defFontColor;}
+a:hover {text-decoration:underline;}
+input, textarea, button, select {font-family:$fontfamily; font-size:$defFontsize;}
+button {border:0 none; background:none; overflow:visible; outline:none; cursor:pointer;}
+button, input[type=text], input[type=password], input[type=tel], input[type=number], input[type=button], input[type=submit] {-webkit-appearance:none; -moz-appearance:none; appearance:none; border:0 none; border-radius:0; background:none; overflow:visible;}
+textarea {border-radius:0;}
+button::-moz-focus-inner {padding:0; border:0;}
+button:disabled {cursor:default;}
+::-webkit-input-placeholder {color:$placeholder;}
+::-moz-placeholder {color:$placeholder; opacity:1;}
+:-ms-input-placeholder {color:$placeholder;}
+
+select {padding-left:10px; padding-right:30px; padding-right:0\0 !important; border-radius:0; background:#fff url($url + 'bg_sel.png') no-repeat 100% 50%; background-size:19px auto; background-image:none\0 !important; -webkit-appearance:none; -moz-appearance:none; appearance:none;}
+select:-ms-expand {display:none;}
+
+.blind {position: absolute;overflow: hidden;margin: -1px;padding: 0;width: 1px;height: 1px;border: none;clip: rect(0, 0, 0, 0)}
