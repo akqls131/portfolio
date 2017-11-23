@@ -92,6 +92,9 @@
 	@else if $media == min-tablet {
     @media only screen and (min-width: $tabletSize) { @content; }
 	}
+	@else if $media == max-tablet {
+    @media only screen and (max-width: $tabletSize) { @content; }
+	}
 }
 
 

@@ -56,20 +56,27 @@ body {
 }
 
 .pflist {
-	padding:0 2%;
+	overflow:hidden;
+	margin-right:2%;
 	&__item {
 		overflow: hidden;
-		margin:20px 0;;
+		float:left;
+		margin:2% 0 0 2%;
 		padding:20px;
+		width:48%;
+		box-sizing:border-box;
 		border:1px solid #000;
 		background:#fff;
 	}
 	&__img {
-		float: left;
+		display: block;
+		margin: 0 auto;
+		text-align: center;
 	}
 	&__text {
-		float: left;
-		margin-left:20px;
+		// float: left;
+		// margin-left:20px;
+		width:100%;
 		.cate {
 			span {
 				display: inline-block;
@@ -128,4 +135,10 @@ body {
 			}
 		} // rate
 	} // __text
+
+	@include respond-to(max-tablet){
+		&__item {
+			float:none;
+		}
+	}
 }
