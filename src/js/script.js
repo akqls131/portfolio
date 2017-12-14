@@ -8,7 +8,7 @@ $(window).on({
                 $('.sel-type a').removeClass('on');
                 $(this).addClass('on');
                 var tyClass = $(this).attr('class').substring($(this).attr('class').indexOf('-') + 1, $(this).attr('class').indexOf('on') - 1);
-                $('.con-list').removeClass('ty-inline ty-box').addClass('ty-' + tyClass)
+                $('.con-list').removeClass('ty-inline ty-box').addClass('ty-' + tyClass);
             }
         })
     }
