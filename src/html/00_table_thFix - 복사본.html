@@ -1,0 +1,1572 @@
+<!DOCTYPE html>
+<html lang="ko">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+		<title>VRiX</title>
+		<!--[if lt IE 9]> <script src="http://img.vrixon.com/js/html5.js"></script> <![endif]-->
+		<link rel="shortcut icon" href="http://img.vrixon.com/images/favicon.ico" type="image/x-icon">
+		<link rel="apple-touch-icon" href="http://img.vrixon.com/images/apple-touch-icon.png">
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="http://mkoryak.github.io/floatThead/dist/jquery.floatThead.js"></script>
+
+		<style>
+html, body, header, footer, nav, section, article, aside, h1, h2, h3, h4, h5, h6, p, ul, ol, li, dl, dt, dd, form, fieldset, legend, caption, blockquote, input, button, select, textarea, button { margin: 0; padding: 0; }
+ul, ol { list-style-type: none; }
+table { table-layout: fixed; border-collapse: collapse; border-spacing: 0; }
+
+table caption { line-height: 0; font-size: 0; }
+.tbl_wrap { position: relative; overflow-y: auto; }
+.tbl_wrap table { min-width: 1200px; }
+
+/* table */
+.board_list { width: 100%; overflow: hidden; }
+.board_list table { width: 100%; border-collapse: separate; border-top: 2px solid #2f465d; border-left: 1px solid #dbdbdb; font-size: 12px; }
+.board_list table thead th { height: 48px; min-height: 100%; text-align: center; }
+.board_list table td { padding: 0 6px; height: 40px; text-align: right; background: #fff; }
+.board_list table tr.on td { background: #e6f2fa; font-weight: bold; }
+.board_list table tr:hover { background: #e6f2fa; }
+.board_list table tr:hover td { background: #e6f2fa; }
+.board_list table th, .board_list table td { border-right: 1px solid #dbdbdb; border-bottom: 1px solid #dbdbdb; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.board_list table th { position: relative; font-size: 12px; line-height: 14px; background: #f3f3f3; }
+.board_list .sort { position: relative; z-index: 1; display: inline-block; padding-right: 15px; vertical-align: middle; }
+.board_list .sort:hover { text-decoration: none; }
+.board_list .sort:before, .board_list .sort:after { content: ''; display: block; position: absolute; top: 50%; right: 0; z-index: 1; width: 0; border: 5px solid #b5bec6; border-left: 4px solid transparent !important; border-right: 4px solid transparent !important; }
+.board_list .sort:before { margin-top: -6px; border-top: 0; }
+.board_list .sort:after { margin-top: 2px; border-bottom: 0; }
+.board_list .sort.up:before { border-color: #ff0000; }
+.board_list .sort.down:after { border-color: #0087ff; }
+.js-tableThFixWrap { position: relative; }
+.js-tableThFixWrap .tbl_wrap { position: static; }
+.js-tableThFixWrap .new_list { overflow: hidden; position: absolute; top: 0; left: 0; z-index: 1002; padding: 0; border-top: 2px solid #2f465d; border-right: 1px solid #dbdbdb; background: #fff; }
+.js-tableThFixWrap .new_list ul { overflow: hidden; }
+.js-tableThFixWrap .new_list li { float: left; font-size: 12px; line-height: 14px; border-bottom: 1px solid #dbdbdb; border-left: 1px solid #dbdbdb; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; background: #f3f3f3; }
+.js-tableThFixWrap .new_list li:after { display: inline-block; width: 1px; height: 100%; content: ''; vertical-align: middle; }
+.js-tableThFixWrap .new_list li.th { padding: 1px; font-weight: bold; text-align: center; background: #f3f3f3; }
+.js-tableThFixWrap .new_list li.td { padding: 0 6px; background: #fff; }
+.js-tableThFixWrap .new_list li.on { background: #e6f2fa; font-weight: bold; }
+.js-tableThFixWrap .new_list .icon_tooltip { position: absolute; top: 0; left: 1px; width: 24px; height: 24px; }
+.js-tableThFixWrap .th_list { position: absolute; top: 0; left: 0; right: 0; }
+
+		</style>
+	</head>
+<body class="sub" style="width:80%;margin:50px auto 100px;">
+	<div id="wrap">
+
+		<!-- S: content -->
+		<div class="container">
+			<section class="g_unit">
+				<div class="inr">
+					<div class="cont">
+
+
+
+
+
+<pre>
+/**
+*  테이블 왼쪽 th 고정
+*  theadFloat() 보다 먼저 호출
+*  기존 js-tableThFix 다중클래스 사용안함.
+*/
+
+
+$(' #테이블ID ').thFix({
+ count : 고정할 row개수, // default 1
+}) 
+
+[ 재 정렬시 호출 ]
+$(' #테이블ID ').thFix({
+ count : 고정할 row개수,
+ realignment:true // 재정렬시 true
+}) 
+
+</pre>
+<script>
+$(document).ready(function(){
+	$('#table1').thFix()
+	$('#inven_wrap').thFix({
+		count:2
+	})
+	theadFloat();
+});
+var theadFloat = function () {
+	var $table = $('.tbl_wrap table');
+	$table.floatThead({
+		scrollContainer: function ($table) {
+			return $table.closest('.tbl_wrap');
+		}
+	});
+};
+	
+
+
+	/**
+	* 테이블 왼쪽 th 고정
+	*/
+	$.fn.thFix = function (options) {			
+		var settings = $.extend({
+			realignment : false,
+			count : 1
+		}, options);
+
+		return this.each(function () {				
+			var th_list = '',
+				td_list = '',
+				newListTh = '',
+				newListTd = '',
+				$fixTarget = $(this);
+
+			$fixTarget.find('tr').each(function (trIdx) {
+				for (var countIdx=0; countIdx<settings.count; countIdx++){
+					var $this = $(this).children().eq(countIdx);
+					var th_txt = $this.html();
+					if ($this.prop("tagName") == 'TH') {
+						if (settings.realignment) return;
+						th_list += '<li class="th" style="width:' + $this.width() + 'px;height:' + $this.height() + 'px">' + th_txt + '</li>';
+					} else if ($this.prop("tagName") == 'TD') {
+						if ($(this).hasClass('on')) th_list += '<li class="td on" style="width:' + $this.width() + 'px;height:' + $this.height() + 'px">' + th_txt + '</li>';
+						else td_list += '<li class="td" style="width:' + $this.width() + 'px;height:' + $this.height() + 'px">' + th_txt + '</li>';
+					}
+				} // count for
+			});
+			if (settings.realignment) { // 처음세팅 이후 재정렬시 thead는 유지
+				$fixTarget.find('.td_list').remove();
+				newListTd = '';
+			} else { // 처음 세팅시
+				$fixTarget.append('<div class="new_list"></div>');
+				newListTh = '<ul class="th_list">' + th_list + '</ul>';
+				$fixTarget.wrap('<div class="js-tableThFixWrap">');
+			}
+			newListTd = '<ul class="td_list">' + td_list + '</ul>';
+			$fixTarget.find('.new_list').append(newListTh, newListTd);
+			
+			var newListW = 0;
+			var thH = 0;
+			var tableH = $fixTarget.find('table').height();
+			var tableMaxH = $fixTarget.height();
+
+			for (var countIdx = 0; countIdx < settings.count; countIdx++) { newListW += $fixTarget.find('thead tr th').eq(countIdx).width(); }
+			for (var i = 0; i < $fixTarget.find('thead tr').length; i++) { thH += $fixTarget.find('thead tr').eq(i).children().first().outerHeight(); }
+			$fixTarget.find('.new_list').css({
+				'padding-top': thH,
+				'width': newListW + (settings.count*2) + settings.count,
+				'height': tableH > tableMaxH ? tableMaxH - thH - 19 : tableH - thH
+			});
+			fixThScroll($fixTarget)
+			return this;
+		})
+		function fixThScroll(fixTarget) {
+			fixTarget.scroll(function () {
+				fixTarget.find('.td_list').css('margin-top', -fixTarget.scrollTop());
+			}).trigger('scroll');
+		}
+	}
+</script>
+
+
+
+
+<button id="testBtn">test click</button>
+<script>
+	$('#testBtn').click(function(){
+		$('#table1 tbody').append($('#table1 tbody tr:nth-child(2n+1)'));
+
+		$('#table1').thFix({
+			realignment:true
+		})
+	})
+</script>
+
+<div class="board_list c_unit">
+	<div id="table1" class="tbl_wrap" style="max-height:500px">
+
+		<table class="mouseover" border="0">
+			<thead>
+			<tr style="cursor:pointer;">
+				<th scope="col" style="width:120px">사업자 <input type="text" id="sch_form" class="sch_table text" style="width:65px"></th>
+				<th scope="col" style="width:150px">미디어 <input type="text" id="sch_form" class="sch_table text" style="width:65px"></th>
+				<th scope="col" class="sort_group header"><a class="sort">Request</a><span class="icon_tooltip" title="매체에서 광고서버로 광고를 요청한 횟수"></span></th>
+				<th scope="col" class="sort_group header"><a class="sort">Delivery</a><span class="icon_tooltip" title="광고서버에서 매체로 광고를 전달한 횟수"></span></th>
+				<th scope="col" class="sort_group header"><a class="sort">F/R(%)</a><span class="icon_tooltip" title="광고 요청 대비 광고 전달률입니다. (산출식 : Delivery / Request * 100)"></span></th>
+				<th scope="col" class="sort_group header"><a class="sort">lmp</a><span class="icon_tooltip" title="광고물(동영상)이 사용자에게 보여지는 횟수"></span></th>
+				<th scope="col" class="sort_group header"><a class="sort">Click</a><span class="icon_tooltip" title="광고가 노출되고 난 후 사용자가 광고를 터치 또는 클릭한 횟수"></span></th>
+				<th scope="col" class="sort_group header"><a class="sort">CTR(%)</a><span class="icon_tooltip" title="노출대비 클릭 수를 백분율하여 CTR(클릭률)을 산출 (산출식 : 클릭수/노출수 * 100)"></span></th>
+				<th scope="col" class="sort_group header"><a class="sort">View</a><span class="icon_tooltip" title="사용자가 광고를 15초 이상 시청한 횟수"></span></th>
+				<th scope="col" class="sort_group header"><a class="sort">VTR(%)</a><span class="icon_tooltip" title="노출대비 View 수를 백분율하여 VTR(시청률)을 산출 (산출식 : View / Impression * 100)"></span></th>
+				<th scope="col" class="sort_group header"><a class="sort">Accept</a><span class="icon_tooltip" title="사용자가 광고를 15초 이상 시청 또는 광고를 터치 또는 클릭한 횟수(15초 이상 시청 후 클릭 시 Accept = 1 입니다.)"></span></th>
+				<th scope="col" class="sort_group header"><a class="sort">25%</a><span class="icon_tooltip" title="영상을 4쿼터(분할)로 나누어 광고 도달율을 측정하는 지표"></span></th>
+				<th scope="col" class="sort_group header"><a class="sort">50%</a><span class="icon_tooltip" title="영상을 4쿼터(분할)로 나누어 광고 도달율을 측정하는 지표"></span></th>
+				<th scope="col" class="sort_group header"><a class="sort">75%</a><span class="icon_tooltip" title="영상을 4쿼터(분할)로 나누어 광고 도달율을 측정하는 지표"></span></th>
+				<th scope="col" class="sort_group header"><a class="sort">Complete</a><span class="icon_tooltip" title="영상을 4쿼터(분할)로 나누어 광고 도달율을 측정하는 지표"></span></th>
+				<th scope="col" class="sort_group header"><a class="sort">Skip</a><span class="icon_tooltip" title="광고 재생 중 사용자가 Skip버튼을 눌러 광고를 건너뛴 횟수"></span></th>
+				
+			</tr>
+			<tr id="total_head" data-mid="" class="on" style="font-weight:bold; cursor:pointer;">
+				<td class="align_l mediaList">Total</td>
+				<td class="align_l mediaList">Total</td>
+				<td class="mediaList">359,169,976</td>
+				<td class="mediaList">22,571,800</td>
+				<td class="mediaList">57.63 %</td>
+				<td class="mediaList">19,680,854</td>
+				<td class="mediaList">116,135</td>
+				<td class="mediaList">0.59 %</td>
+				<td class="mediaList">15,673,930</td>
+				<td class="mediaList">79.64 %</td>
+				<td class="mediaList">15,738,352</td>
+				<td class="mediaList">16,527,619</td>
+				<td class="mediaList">15,367,392</td>
+				<td class="mediaList">14,615,765</td>
+				<td class="mediaList">14,307,076</td>
+				<td class="mediaList">3,052,918</td>
+			</tr>
+			</thead>
+			<tbody id="mediaTable">
+							<tr data-cid="SPTH" data-mid="IKON" style="cursor:pointer;" class="">
+					<td class="align_l mediaList" title="GomTV">GomTV1</td>
+					<td class="align_l mediaList media_row" title="M.APP_AND"><a>M.APP_AND</a></td>
+					<td class="mediaList">G1 345,233</td>
+					<td class="mediaList">G1 172,876</td>
+					<td class="mediaList">G1 50.08 %</td>
+					<td class="mediaList">G1 145,625</td>
+					<td class="mediaList">G1 3,703</td>
+					<td class="mediaList">G1 2.54 %</td>
+					<td class="mediaList">G1 63,123</td>
+					<td class="mediaList">G1 43.35 %</td>
+					<td class="mediaList">G1 65,963</td>
+					<td class="mediaList">G1 77,173</td>
+					<td class="mediaList">G1 56,520</td>
+					<td class="mediaList">G1 41,532</td>
+					<td class="mediaList">G1 37,900</td>
+					<td class="mediaList">G1 85,387</td>
+				</tr>
+							<tr data-cid="SPTH" data-mid="ZCL4" style="cursor:pointer;">
+					<td class="align_l mediaList" title="GomTV">GomTV2</td>
+					<td class="align_l mediaList media_row" title="M.APP_IOS"><a>M.APP_IOS</a></td>
+					<td class="mediaList">G2 30,308</td>
+					<td class="mediaList">G2 14,020</td>
+					<td class="mediaList">G2 46.26 %</td>
+					<td class="mediaList">G2 10,366</td>
+					<td class="mediaList">G2 289</td>
+					<td class="mediaList">G2 2.79 %</td>
+					<td class="mediaList">G2 2,788</td>
+					<td class="mediaList">G2 26.9 %</td>
+					<td class="mediaList">G2 3,038</td>
+					<td class="mediaList">G2 4,033</td>
+					<td class="mediaList">G2 2,776</td>
+					<td class="mediaList">G2 2,170</td>
+					<td class="mediaList">G2 1,242</td>
+					<td class="mediaList">G2 6,431</td>
+				</tr>
+							<tr data-cid="SPTH" data-mid="ROSI" style="cursor:pointer;">
+					<td class="align_l mediaList" title="GomTV">GomTV3</td>
+					<td class="align_l mediaList media_row" title="M.WEB"><a>M.WEB</a></td>
+					<td class="mediaList">G3 657,251</td>
+					<td class="mediaList">G3 334,180</td>
+					<td class="mediaList">G3 50.85 %</td>
+					<td class="mediaList">G3 249,215</td>
+					<td class="mediaList">G3 12,465</td>
+					<td class="mediaList">G3 5 %</td>
+					<td class="mediaList">G3 95,623</td>
+					<td class="mediaList">G3 38.37 %</td>
+					<td class="mediaList">G3 106,774</td>
+					<td class="mediaList">G3 120,724</td>
+					<td class="mediaList">G3 88,159</td>
+					<td class="mediaList">G3 41,771</td>
+					<td class="mediaList">G3 35,699</td>
+					<td class="mediaList">G3 165,264</td>
+				</tr>
+							<tr data-cid="SPTH" data-mid="HIOR" style="cursor:pointer;">
+					<td class="align_l mediaList" title="GomTV">GomTV4</td>
+					<td class="align_l mediaList media_row" title="PC.APP"><a>PC.APP</a></td>
+					<td class="mediaList">G4 3,141,560</td>
+					<td class="mediaList">G4 2,272,847</td>
+					<td class="mediaList">G4 72.35 %</td>
+					<td class="mediaList">G4 1,760,984</td>
+					<td class="mediaList">G4 12,286</td>
+					<td class="mediaList">G4 0.7 %</td>
+					<td class="mediaList">G4 1,499,194</td>
+					<td class="mediaList">G4 85.13 %</td>
+					<td class="mediaList">G4 1,504,654</td>
+					<td class="mediaList">G4 1,570,695</td>
+					<td class="mediaList">G4 1,490,763</td>
+					<td class="mediaList">G4 1,427,014</td>
+					<td class="mediaList">G4 1,401,269</td>
+					<td class="mediaList">G4 184,197</td>
+				</tr>
+							
+						</tbody>
+		</table>
+
+	</div>
+</div>
+
+
+
+
+
+
+
+
+
+<button id="testBtn2">test click</button>
+<script>
+	$('#testBtn2').click(function(){
+		$('#inven_wrap tbody').append($('#inven_wrap tbody tr:nth-child(2n+1)'));
+
+		$('#inven_wrap').thFix({
+			realignment:true,
+			count:2
+		})
+	})
+</script>
+
+
+<div class="board_list c_unit">
+	<div class="align_both">
+		<div class="rt">
+			<a id="btn_excel1" class="btn_rud2" style="cursor:pointer;"><span class="icon icon_excel"></span>엑셀 다운로드</a>
+		</div>
+	</div>								
+	<div id="inven_wrap" class="tbl_wrap" style="height:500px">
+			
+		<table id="sorter" class="tablesorter mouseover" border="0" style="table-layout: fixed; min-width: 1669px;"><colgroup><col style="width: 103px;"><col style="width: 103px;"><col style="width: 153px;"><col style="width: 93px;"><col style="width: 93px;"><col style="width: 93px;"><col style="width: 93px;"><col style="width: 93px;"><col style="width: 93px;"><col style="width: 94px;"><col style="width: 94px;"><col style="width: 94px;"><col style="width: 94px;"><col style="width: 94px;"><col style="width: 94px;"><col style="width: 94px;"><col style="width: 94px;"></colgroup>		
+			<thead>
+				<tr style="cursor:pointer;">
+					<th scope="col" style="width:100px">사업자2<span class="icon_tooltip" title="매체에서 광고서버로 광고를 요청한 횟수"></span></th>
+					<th scope="col" style="width:100px">미디어</th>
+					<th scope="col" class="sort_group" style="width:150px">지면 <input type="text" id="sch_form" class="sch_table text" style="width:65px;"></th>
+					<th scope="col" class="sort_group header"><a class="sort">Request</a><span class="icon_tooltip" title="매체에서 광고서버로 광고를 요청한 횟수"></span></th>
+					<th scope="col" class="sort_group header"><a class="sort">Delivery</a><span class="icon_tooltip" title="광고서버에서 매체로 광고를 전달한 횟수"></span></th>
+					<th scope="col" class="sort_group header"><a class="sort">F/R(%)</a><span class="icon_tooltip" title="광고 요청 대비 광고 전달률입니다. (산출식 : Delivery / Request * 100)"></span></th>
+					<th scope="col" class="sort_group header"><a class="sort">lmp</a><span class="icon_tooltip" title="광고물(동영상)이 사용자에게 보여지는 횟수"></span></th>
+					<th scope="col" class="sort_group header"><a class="sort">Click</a><span class="icon_tooltip" title="광고가 노출되고 난 후 사용자가 광고를 터치 또는 클릭한 횟수"></span></th>
+					<th scope="col" class="sort_group header"><a class="sort">CTR(%)</a><span class="icon_tooltip" title="노출대비 클릭 수를 백분율하여 CTR(클릭률)을 산출 (산출식 : 클릭수/노출수 * 100)"></span></th>
+					<th scope="col" class="sort_group header"><a class="sort">View</a><span class="icon_tooltip" title="사용자가 광고를 15초 이상 시청한 횟수"></span></th>
+					<th scope="col" class="sort_group header"><a class="sort">VTR(%)</a><span class="icon_tooltip" title="노출대비 View 수를 백분율하여 VTR(시청률)을 산출 (산출식 : View / Impression * 100)"></span></th>
+					<th scope="col" class="sort_group header"><a class="sort">Accept</a><span class="icon_tooltip" title="사용자가 광고를 15초 이상 시청 또는 광고를 터치 또는 클릭한 횟수(15초 이상 시청 후 클릭 시 Accept = 1 입니다.)"></span></th>
+					<th scope="col" class="sort_group header"><a class="sort">25%</a><span class="icon_tooltip" title="영상을 4쿼터(분할)로 나누어 광고 도달율을 측정하는 지표"></span></th>
+					<th scope="col" class="sort_group header"><a class="sort">50%</a><span class="icon_tooltip" title="영상을 4쿼터(분할)로 나누어 광고 도달율을 측정하는 지표"></span></th>
+					<th scope="col" class="sort_group header"><a class="sort">75%</a><span class="icon_tooltip" title="영상을 4쿼터(분할)로 나누어 광고 도달율을 측정하는 지표"></span></th>
+					<th scope="col" class="sort_group header"><a class="sort">Complete</a><span class="icon_tooltip" title="영상을 4쿼터(분할)로 나누어 광고 도달율을 측정하는 지표"></span></th>
+					<th scope="col" class="sort_group header"><a class="sort">Skip</a><span class="icon_tooltip" title="광고 재생 중 사용자가 Skip버튼을 눌러 광고를 건너뛴 횟수"></span></th>
+				</tr>
+				<tr id="total_head" data-iid="" class="invenList on" style="font-weight:bold; cursor:pointer;">
+					<td class="align_l">Total</td>
+					<td class="align_l">Total</td>
+					<td class="align_l">Total</td>
+					<td>48,653,535</td>
+					<td>29,528,140</td>
+					<td>60.69 %</td>
+					<td>25,947,321</td>
+					<td>122,343</td>
+					<td>0.47 %</td>
+					<td>22,033,388</td>
+					<td>84.92 %</td>
+					<td>22,103,305</td>
+					<td>22,818,041</td>
+					<td>21,692,542</td>
+					<td>20,705,824</td>
+					<td>20,392,812</td>
+					<td>2,714,315</td>
+				</tr>
+			</thead>
+			<tbody id="invenTable">
+							<tr data-iid="C10" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="GomTV">GomTV</td>
+					<td class="align_l" title="M.APP_AND">M.APP_AND</td>
+					<td class="align_l" title="Mobile일반광고(with 징글)">Mobile일반광고(with 징글)</td>
+					<td>343,752</td>
+					<td>162,242</td>
+					<td>47.2 %</td>
+					<td>138,341</td>
+					<td>3,737</td>
+					<td>2.7 %</td>
+					<td>58,623</td>
+					<td>42.38 %</td>
+					<td>61,508</td>
+					<td>72,372</td>
+					<td>52,875</td>
+					<td>39,851</td>
+					<td>36,551</td>
+					<td>80,539</td>
+				</tr>
+							<tr data-iid="C11" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="GomTV">GomTV</td>
+					<td class="align_l" title="M.APP_AND">M.APP_AND</td>
+					<td class="align_l" title="Mobile쿡방(with 쿡방징글)">Mobile쿡방(with 쿡방징글)</td>
+					<td>2,283</td>
+					<td>1,290</td>
+					<td>56.5 %</td>
+					<td>889</td>
+					<td>32</td>
+					<td>3.6 %</td>
+					<td>375</td>
+					<td>42.18 %</td>
+					<td>399</td>
+					<td>458</td>
+					<td>329</td>
+					<td>275</td>
+					<td>258</td>
+					<td>305</td>
+				</tr>
+							<tr data-iid="USBW" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="GomTV">GomTV</td>
+					<td class="align_l" title="M.APP_IOS">M.APP_IOS</td>
+					<td class="align_l" title="Mobile일반광고(with 징글)">Mobile일반광고(with 징글)</td>
+					<td>29,262</td>
+					<td>13,650</td>
+					<td>46.65 %</td>
+					<td>10,264</td>
+					<td>244</td>
+					<td>2.38 %</td>
+					<td>3,282</td>
+					<td>31.98 %</td>
+					<td>3,490</td>
+					<td>4,578</td>
+					<td>3,353</td>
+					<td>2,601</td>
+					<td>1,570</td>
+					<td>5,974</td>
+				</tr>
+							<tr data-iid="SXOM" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="GomTV">GomTV</td>
+					<td class="align_l" title="M.APP_IOS">M.APP_IOS</td>
+					<td class="align_l" title="Mobile쿡방(with 쿡방징글)">Mobile쿡방(with 쿡방징글)</td>
+					<td>572</td>
+					<td>288</td>
+					<td>50.35 %</td>
+					<td>165</td>
+					<td>3</td>
+					<td>1.82 %</td>
+					<td>50</td>
+					<td>30.3 %</td>
+					<td>52</td>
+					<td>69</td>
+					<td>50</td>
+					<td>34</td>
+					<td>19</td>
+					<td>72</td>
+				</tr>
+							<tr data-iid="C12" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="GomTV">GomTV</td>
+					<td class="align_l" title="M.WEB">M.WEB</td>
+					<td class="align_l" title="Mobile Web(only nhn)">Mobile Web(only nhn)</td>
+					<td>-</td>
+					<td>-</td>
+					<td>- %</td>
+					<td>-</td>
+					<td>-</td>
+					<td>- %</td>
+					<td>-</td>
+					<td>- %</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+				</tr>
+							<tr data-iid="QMYS" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="GomTV">GomTV</td>
+					<td class="align_l" title="M.WEB">M.WEB</td>
+					<td class="align_l" title="Mobile일반광고(with 징글)">Mobile일반광고(with 징글)</td>
+					<td>635,684</td>
+					<td>325,548</td>
+					<td>51.21 %</td>
+					<td>246,024</td>
+					<td>11,831</td>
+					<td>4.81 %</td>
+					<td>93,043</td>
+					<td>37.82 %</td>
+					<td>103,567</td>
+					<td>117,640</td>
+					<td>86,621</td>
+					<td>42,603</td>
+					<td>36,382</td>
+					<td>160,411</td>
+				</tr>
+							<tr data-iid="9V0M" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="GomTV">GomTV</td>
+					<td class="align_l" title="M.WEB">M.WEB</td>
+					<td class="align_l" title="Mobile쿡방(with 쿡방징글)">Mobile쿡방(with 쿡방징글)</td>
+					<td>8,944</td>
+					<td>4,236</td>
+					<td>47.36 %</td>
+					<td>3,176</td>
+					<td>267</td>
+					<td>8.41 %</td>
+					<td>1,153</td>
+					<td>36.3 %</td>
+					<td>1,391</td>
+					<td>1,517</td>
+					<td>1,046</td>
+					<td>782</td>
+					<td>720</td>
+					<td>1,682</td>
+				</tr>
+							<tr data-iid="C18" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="GomTV">GomTV</td>
+					<td class="align_l" title="PC.APP">PC.APP</td>
+					<td class="align_l" title="GBM">GBM</td>
+					<td>1,855,322</td>
+					<td>1,587,166</td>
+					<td>85.55 %</td>
+					<td>1,206,223</td>
+					<td>2,814</td>
+					<td>0.23 %</td>
+					<td>1,038,559</td>
+					<td>86.1 %</td>
+					<td>1,039,462</td>
+					<td>1,072,885</td>
+					<td>1,024,705</td>
+					<td>998,432</td>
+					<td>981,853</td>
+					<td>7,869</td>
+				</tr>
+							<tr data-iid="C6" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="GomTV">GomTV</td>
+					<td class="align_l" title="PC.APP">PC.APP</td>
+					<td class="align_l" title="PC일반광고,프리뷰(with 징글)">PC일반광고,프리뷰(with 징글)</td>
+					<td>1,397,711</td>
+					<td>709,785</td>
+					<td>50.78 %</td>
+					<td>483,853</td>
+					<td>9,221</td>
+					<td>1.91 %</td>
+					<td>333,644</td>
+					<td>68.96 %</td>
+					<td>339,038</td>
+					<td>390,636</td>
+					<td>339,931</td>
+					<td>303,504</td>
+					<td>291,307</td>
+					<td>162,618</td>
+				</tr>
+							<tr data-iid="C9" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="GomTV">GomTV</td>
+					<td class="align_l" title="PC.APP">PC.APP</td>
+					<td class="align_l" title="PC쿡방영상상세(일반광고+엔딩롤)">PC쿡방영상상세(일반광고+엔딩롤)</td>
+					<td>5,498</td>
+					<td>2,781</td>
+					<td>50.58 %</td>
+					<td>1,565</td>
+					<td>20</td>
+					<td>1.28 %</td>
+					<td>1,166</td>
+					<td>74.5 %</td>
+					<td>1,179</td>
+					<td>1,328</td>
+					<td>1,195</td>
+					<td>1,093</td>
+					<td>1,047</td>
+					<td>382</td>
+				</tr>
+							<tr data-iid="C7" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="GomTV">GomTV</td>
+					<td class="align_l" title="PC.WEB">PC.WEB</td>
+					<td class="align_l" title="NMP 무료관">NMP 무료관</td>
+					<td>567,962</td>
+					<td>183,879</td>
+					<td>32.38 %</td>
+					<td>176,783</td>
+					<td>205</td>
+					<td>0.12 %</td>
+					<td>150,447</td>
+					<td>85.1 %</td>
+					<td>150,625</td>
+					<td>158,073</td>
+					<td>150,964</td>
+					<td>146,876</td>
+					<td>143,937</td>
+					<td>2,772</td>
+				</tr>
+							<tr data-iid="IVGH" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="GomTV">GomTV</td>
+					<td class="align_l" title="PC.WEB">PC.WEB</td>
+					<td class="align_l" title="PC일반광고,프리뷰(with 징글)">PC일반광고,프리뷰(with 징글)</td>
+					<td>1,241,529</td>
+					<td>653,889</td>
+					<td>52.67 %</td>
+					<td>531,486</td>
+					<td>9,401</td>
+					<td>1.77 %</td>
+					<td>307,237</td>
+					<td>57.81 %</td>
+					<td>313,362</td>
+					<td>374,266</td>
+					<td>306,194</td>
+					<td>248,433</td>
+					<td>231,571</td>
+					<td>238,969</td>
+				</tr>
+							<tr data-iid="C8" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="GomTV">GomTV</td>
+					<td class="align_l" title="PC.WEB">PC.WEB</td>
+					<td class="align_l" title="PC쿡방브랜드관(징글 전용)">PC쿡방브랜드관(징글 전용)</td>
+					<td>137,496</td>
+					<td>-</td>
+					<td>- %</td>
+					<td>0</td>
+					<td>0</td>
+					<td>- %</td>
+					<td>0</td>
+					<td>- %</td>
+					<td>0</td>
+					<td>0</td>
+					<td>0</td>
+					<td>0</td>
+					<td>0</td>
+					<td>0</td>
+				</tr>
+							<tr data-iid="6ZQP" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="GomTV">GomTV</td>
+					<td class="align_l" title="PC.WEB">PC.WEB</td>
+					<td class="align_l" title="PC쿡방영상상세(일반광고+엔딩롤)">PC쿡방영상상세(일반광고+엔딩롤)</td>
+					<td>5,955</td>
+					<td>2,898</td>
+					<td>48.66 %</td>
+					<td>2,213</td>
+					<td>38</td>
+					<td>1.72 %</td>
+					<td>1,180</td>
+					<td>53.32 %</td>
+					<td>1,207</td>
+					<td>1,513</td>
+					<td>1,159</td>
+					<td>962</td>
+					<td>891</td>
+					<td>1,059</td>
+				</tr>
+							<tr data-iid="C4" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="GomTV_dev">GomTV_dev</td>
+					<td class="align_l" title="DEV.ALL">DEV.ALL</td>
+					<td class="align_l" title="GomTV (개발용)">GomTV (개발용)</td>
+					<td>-</td>
+					<td>-</td>
+					<td>- %</td>
+					<td>-</td>
+					<td>-</td>
+					<td>- %</td>
+					<td>-</td>
+					<td>- %</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+				</tr>
+							<tr data-iid="C1" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="GomTV_dev">GomTV_dev</td>
+					<td class="align_l" title="DEV.ALL">DEV.ALL</td>
+					<td class="align_l" title="GomTV (매체 연동용)">GomTV (매체 연동용)</td>
+					<td>295</td>
+					<td>0</td>
+					<td>- %</td>
+					<td>0</td>
+					<td>0</td>
+					<td>- %</td>
+					<td>0</td>
+					<td>- %</td>
+					<td>0</td>
+					<td>0</td>
+					<td>0</td>
+					<td>0</td>
+					<td>0</td>
+					<td>0</td>
+				</tr>
+							<tr data-iid="NHGC" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="GomTV_PIP">GomTV_PIP</td>
+					<td class="align_l" title="Android">Android</td>
+					<td class="align_l" title="SMR_Android">SMR_Android</td>
+					<td>35,392</td>
+					<td>30,256</td>
+					<td>85.49 %</td>
+					<td>29,045</td>
+					<td>2,314</td>
+					<td>7.97 %</td>
+					<td>21,784</td>
+					<td>75 %</td>
+					<td>23,333</td>
+					<td>24,157</td>
+					<td>21,255</td>
+					<td>18,992</td>
+					<td>17,547</td>
+					<td>4,132</td>
+				</tr>
+							<tr data-iid="BNAY" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="GomTV_PIP">GomTV_PIP</td>
+					<td class="align_l" title="Android">Android</td>
+					<td class="align_l" title="SPOTV_Android">SPOTV_Android</td>
+					<td>150</td>
+					<td>149</td>
+					<td>99.33 %</td>
+					<td>144</td>
+					<td>3</td>
+					<td>2.08 %</td>
+					<td>106</td>
+					<td>73.61 %</td>
+					<td>107</td>
+					<td>127</td>
+					<td>112</td>
+					<td>93</td>
+					<td>83</td>
+					<td>21</td>
+				</tr>
+							<tr data-iid="OSBU" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="GomTV_PIP">GomTV_PIP</td>
+					<td class="align_l" title="Android">Android</td>
+					<td class="align_l" title="빌리어즈TV_Android">빌리어즈TV_Android</td>
+					<td>1</td>
+					<td>1</td>
+					<td>100 %</td>
+					<td>1</td>
+					<td>0</td>
+					<td>- %</td>
+					<td>0</td>
+					<td>- %</td>
+					<td>0</td>
+					<td>1</td>
+					<td>0</td>
+					<td>0</td>
+					<td>0</td>
+					<td>0</td>
+				</tr>
+							<tr data-iid="NL6A" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="GomTV_PIP">GomTV_PIP</td>
+					<td class="align_l" title="iOS">iOS</td>
+					<td class="align_l" title="SMR_iOS">SMR_iOS</td>
+					<td>2,521</td>
+					<td>2,092</td>
+					<td>82.98 %</td>
+					<td>2,053</td>
+					<td>242</td>
+					<td>11.79 %</td>
+					<td>1,161</td>
+					<td>56.55 %</td>
+					<td>1,390</td>
+					<td>1,589</td>
+					<td>1,316</td>
+					<td>1,058</td>
+					<td>730</td>
+					<td>513</td>
+				</tr>
+							<tr data-iid="RGPU" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="GomTV_PIP">GomTV_PIP</td>
+					<td class="align_l" title="iOS">iOS</td>
+					<td class="align_l" title="SPOTV_iOS">SPOTV_iOS</td>
+					<td>25</td>
+					<td>25</td>
+					<td>100 %</td>
+					<td>25</td>
+					<td>0</td>
+					<td>- %</td>
+					<td>23</td>
+					<td>92 %</td>
+					<td>23</td>
+					<td>24</td>
+					<td>23</td>
+					<td>21</td>
+					<td>16</td>
+					<td>3</td>
+				</tr>
+							<tr data-iid="C7TN" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="GomTV_PIP">GomTV_PIP</td>
+					<td class="align_l" title="iOS">iOS</td>
+					<td class="align_l" title="빌리어즈TV_iOS">빌리어즈TV_iOS</td>
+					<td>-</td>
+					<td>-</td>
+					<td>- %</td>
+					<td>-</td>
+					<td>-</td>
+					<td>- %</td>
+					<td>-</td>
+					<td>- %</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+				</tr>
+							<tr data-iid="BDNO" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="GomTV_PIP">GomTV_PIP</td>
+					<td class="align_l" title="MobileWeb">MobileWeb</td>
+					<td class="align_l" title="SMR_MobileWeb">SMR_MobileWeb</td>
+					<td>23,108</td>
+					<td>19,199</td>
+					<td>83.08 %</td>
+					<td>16,125</td>
+					<td>2,828</td>
+					<td>17.54 %</td>
+					<td>9,213</td>
+					<td>57.13 %</td>
+					<td>11,768</td>
+					<td>11,207</td>
+					<td>8,704</td>
+					<td>6,676</td>
+					<td>5,882</td>
+					<td>4,885</td>
+				</tr>
+							<tr data-iid="HZBT" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="GomTV_PIP">GomTV_PIP</td>
+					<td class="align_l" title="MobileWeb">MobileWeb</td>
+					<td class="align_l" title="SPOTV_MobileWeb">SPOTV_MobileWeb</td>
+					<td>601</td>
+					<td>593</td>
+					<td>98.67 %</td>
+					<td>497</td>
+					<td>62</td>
+					<td>12.47 %</td>
+					<td>353</td>
+					<td>71.03 %</td>
+					<td>361</td>
+					<td>420</td>
+					<td>358</td>
+					<td>270</td>
+					<td>246</td>
+					<td>128</td>
+				</tr>
+							<tr data-iid="LLUM" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="GomTV_PIP">GomTV_PIP</td>
+					<td class="align_l" title="MobileWeb">MobileWeb</td>
+					<td class="align_l" title="빌리어즈TV_MobileWeb">빌리어즈TV_MobileWeb</td>
+					<td>39</td>
+					<td>38</td>
+					<td>97.44 %</td>
+					<td>32</td>
+					<td>5</td>
+					<td>15.63 %</td>
+					<td>27</td>
+					<td>84.38 %</td>
+					<td>28</td>
+					<td>30</td>
+					<td>28</td>
+					<td>16</td>
+					<td>15</td>
+					<td>14</td>
+				</tr>
+							<tr data-iid="DQOGH" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="GomTV_PIP">GomTV_PIP</td>
+					<td class="align_l" title="PcApp">PcApp</td>
+					<td class="align_l" title="SMR_GBM">SMR_GBM</td>
+					<td>26,698,473</td>
+					<td>17,460,622</td>
+					<td>65.4 %</td>
+					<td>15,759,147</td>
+					<td>11,835</td>
+					<td>0.08 %</td>
+					<td>14,928,606</td>
+					<td>94.73 %</td>
+					<td>14,931,153</td>
+					<td>15,164,114</td>
+					<td>14,941,551</td>
+					<td>14,810,660</td>
+					<td>14,725,357</td>
+					<td>7,769</td>
+				</tr>
+							<tr data-iid="B34X" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="GomTV_PIP">GomTV_PIP</td>
+					<td class="align_l" title="PcApp">PcApp</td>
+					<td class="align_l" title="SMR_PcApp">SMR_PcApp</td>
+					<td>85,361</td>
+					<td>67,913</td>
+					<td>79.56 %</td>
+					<td>48,564</td>
+					<td>1,909</td>
+					<td>3.93 %</td>
+					<td>37,126</td>
+					<td>76.45 %</td>
+					<td>37,249</td>
+					<td>40,847</td>
+					<td>36,008</td>
+					<td>32,159</td>
+					<td>29,403</td>
+					<td>3,055</td>
+				</tr>
+							<tr data-iid="PYHSV" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="GomTV_PIP">GomTV_PIP</td>
+					<td class="align_l" title="PcApp">PcApp</td>
+					<td class="align_l" title="SPOTV_GBM">SPOTV_GBM</td>
+					<td>-</td>
+					<td>-</td>
+					<td>- %</td>
+					<td>-</td>
+					<td>-</td>
+					<td>- %</td>
+					<td>-</td>
+					<td>- %</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+				</tr>
+							<tr data-iid="C5" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="GomTV_PIP">GomTV_PIP</td>
+					<td class="align_l" title="PcApp">PcApp</td>
+					<td class="align_l" title="SPOTV_PcApp">SPOTV_PcApp</td>
+					<td>2,336</td>
+					<td>2,298</td>
+					<td>98.37 %</td>
+					<td>1,290</td>
+					<td>35</td>
+					<td>2.71 %</td>
+					<td>1,078</td>
+					<td>83.57 %</td>
+					<td>1,078</td>
+					<td>1,178</td>
+					<td>1,101</td>
+					<td>983</td>
+					<td>910</td>
+					<td>75</td>
+				</tr>
+							<tr data-iid="EDGGM" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="GomTV_PIP">GomTV_PIP</td>
+					<td class="align_l" title="PcApp">PcApp</td>
+					<td class="align_l" title="빌리어즈TV_GBM">빌리어즈TV_GBM</td>
+					<td>-</td>
+					<td>-</td>
+					<td>- %</td>
+					<td>-</td>
+					<td>-</td>
+					<td>- %</td>
+					<td>-</td>
+					<td>- %</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+				</tr>
+							<tr data-iid="C16" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="GomTV_PIP">GomTV_PIP</td>
+					<td class="align_l" title="PcApp">PcApp</td>
+					<td class="align_l" title="빌리어즈TV_PcApp">빌리어즈TV_PcApp</td>
+					<td>481</td>
+					<td>471</td>
+					<td>97.92 %</td>
+					<td>338</td>
+					<td>11</td>
+					<td>3.25 %</td>
+					<td>304</td>
+					<td>89.94 %</td>
+					<td>305</td>
+					<td>316</td>
+					<td>303</td>
+					<td>274</td>
+					<td>256</td>
+					<td>35</td>
+				</tr>
+							<tr data-iid="WLXEK" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="GomTV_PIP">GomTV_PIP</td>
+					<td class="align_l" title="PcWeb">PcWeb</td>
+					<td class="align_l" title="SMR_NMP">SMR_NMP</td>
+					<td>5,713,836</td>
+					<td>4,285,333</td>
+					<td>75 %</td>
+					<td>3,882,992</td>
+					<td>4,197</td>
+					<td>0.11 %</td>
+					<td>3,354,616</td>
+					<td>86.39 %</td>
+					<td>3,355,729</td>
+					<td>3,375,292</td>
+					<td>3,237,088</td>
+					<td>3,148,505</td>
+					<td>3,085,743</td>
+					<td>3,833</td>
+				</tr>
+							<tr data-iid="MVBQ" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="GomTV_PIP">GomTV_PIP</td>
+					<td class="align_l" title="PcWeb">PcWeb</td>
+					<td class="align_l" title="SMR_PcWeb">SMR_PcWeb</td>
+					<td>564,368</td>
+					<td>432,897</td>
+					<td>76.7 %</td>
+					<td>410,455</td>
+					<td>18,349</td>
+					<td>4.47 %</td>
+					<td>340,699</td>
+					<td>83.01 %</td>
+					<td>343,354</td>
+					<td>363,311</td>
+					<td>326,211</td>
+					<td>279,176</td>
+					<td>255,838</td>
+					<td>70,626</td>
+				</tr>
+							<tr data-iid="C13" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="GomTV_PIP">GomTV_PIP</td>
+					<td class="align_l" title="PcWeb">PcWeb</td>
+					<td class="align_l" title="SPOTV_NMP">SPOTV_NMP</td>
+					<td>-</td>
+					<td>-</td>
+					<td>- %</td>
+					<td>-</td>
+					<td>-</td>
+					<td>- %</td>
+					<td>-</td>
+					<td>- %</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+				</tr>
+							<tr data-iid="ESUS" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="GomTV_PIP">GomTV_PIP</td>
+					<td class="align_l" title="PcWeb">PcWeb</td>
+					<td class="align_l" title="SPOTV_PcWeb">SPOTV_PcWeb</td>
+					<td>3,902</td>
+					<td>3,823</td>
+					<td>97.98 %</td>
+					<td>3,658</td>
+					<td>54</td>
+					<td>1.48 %</td>
+					<td>2,463</td>
+					<td>67.33 %</td>
+					<td>2,469</td>
+					<td>3,007</td>
+					<td>2,609</td>
+					<td>2,218</td>
+					<td>2,019</td>
+					<td>220</td>
+				</tr>
+							<tr data-iid="C17" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="GomTV_PIP">GomTV_PIP</td>
+					<td class="align_l" title="PcWeb">PcWeb</td>
+					<td class="align_l" title="빌리어즈TV_NMP">빌리어즈TV_NMP</td>
+					<td>-</td>
+					<td>-</td>
+					<td>- %</td>
+					<td>-</td>
+					<td>-</td>
+					<td>- %</td>
+					<td>-</td>
+					<td>- %</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+				</tr>
+							<tr data-iid="L0O6" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="GomTV_PIP">GomTV_PIP</td>
+					<td class="align_l" title="PcWeb">PcWeb</td>
+					<td class="align_l" title="빌리어즈TV_PcWeb">빌리어즈TV_PcWeb</td>
+					<td>243</td>
+					<td>241</td>
+					<td>99.18 %</td>
+					<td>236</td>
+					<td>7</td>
+					<td>2.97 %</td>
+					<td>192</td>
+					<td>81.36 %</td>
+					<td>193</td>
+					<td>219</td>
+					<td>194</td>
+					<td>159</td>
+					<td>141</td>
+					<td>43</td>
+				</tr>
+							<tr data-iid="C20" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="KT">KT</td>
+					<td class="align_l" title="MobileWeb">MobileWeb</td>
+					<td class="align_l" title="Mo.Free wifi">Mo.Free wifi</td>
+					<td>189,334</td>
+					<td>189,334</td>
+					<td>100 %</td>
+					<td>137,401</td>
+					<td>2,333</td>
+					<td>1.7 %</td>
+					<td>84,274</td>
+					<td>61.33 %</td>
+					<td>86,322</td>
+					<td>99,695</td>
+					<td>90,403</td>
+					<td>81,228</td>
+					<td>71,492</td>
+					<td>7,459</td>
+				</tr>
+							<tr data-iid="NZUJA" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="KT">KT</td>
+					<td class="align_l" title="PcWeb">PcWeb</td>
+					<td class="align_l" title="PC.Free wifi">PC.Free wifi</td>
+					<td>31,845</td>
+					<td>31,845</td>
+					<td>100 %</td>
+					<td>26,561</td>
+					<td>774</td>
+					<td>2.91 %</td>
+					<td>14,833</td>
+					<td>55.85 %</td>
+					<td>15,450</td>
+					<td>19,333</td>
+					<td>16,902</td>
+					<td>15,260</td>
+					<td>13,917</td>
+					<td>612</td>
+				</tr>
+							<tr data-iid="JKOGA" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="KT_Abroad">KT_Abroad</td>
+					<td class="align_l" title="MOweb">MOweb</td>
+					<td class="align_l" title="Mo_gn">Mo_gn</td>
+					<td>2,157</td>
+					<td>2,157</td>
+					<td>100 %</td>
+					<td>1,460</td>
+					<td>13</td>
+					<td>0.89 %</td>
+					<td>489</td>
+					<td>33.49 %</td>
+					<td>502</td>
+					<td>896</td>
+					<td>682</td>
+					<td>597</td>
+					<td>438</td>
+					<td>13</td>
+				</tr>
+							<tr data-iid="ZMKOX" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="KT_Abroad">KT_Abroad</td>
+					<td class="align_l" title="MOweb">MOweb</td>
+					<td class="align_l" title="Mo_gy">Mo_gy</td>
+					<td>343</td>
+					<td>343</td>
+					<td>100 %</td>
+					<td>251</td>
+					<td>1</td>
+					<td>0.4 %</td>
+					<td>99</td>
+					<td>39.44 %</td>
+					<td>100</td>
+					<td>154</td>
+					<td>111</td>
+					<td>104</td>
+					<td>90</td>
+					<td>1</td>
+				</tr>
+							<tr data-iid="UNNSL" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="KT_Abroad">KT_Abroad</td>
+					<td class="align_l" title="MOweb">MOweb</td>
+					<td class="align_l" title="Mo_my">Mo_my</td>
+					<td>2,251</td>
+					<td>2,251</td>
+					<td>100 %</td>
+					<td>1,534</td>
+					<td>2</td>
+					<td>0.13 %</td>
+					<td>519</td>
+					<td>33.83 %</td>
+					<td>521</td>
+					<td>964</td>
+					<td>731</td>
+					<td>624</td>
+					<td>450</td>
+					<td>2</td>
+				</tr>
+							<tr data-iid="ILCJA" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="KT_Abroad">KT_Abroad</td>
+					<td class="align_l" title="MOweb">MOweb</td>
+					<td class="align_l" title="Mo_sh">Mo_sh</td>
+					<td>1,399</td>
+					<td>1,399</td>
+					<td>100 %</td>
+					<td>888</td>
+					<td>7</td>
+					<td>0.79 %</td>
+					<td>287</td>
+					<td>32.32 %</td>
+					<td>294</td>
+					<td>562</td>
+					<td>432</td>
+					<td>370</td>
+					<td>246</td>
+					<td>7</td>
+				</tr>
+							<tr data-iid="HDQPX" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="KT_Abroad">KT_Abroad</td>
+					<td class="align_l" title="PCweb">PCweb</td>
+					<td class="align_l" title="PC_gn">PC_gn</td>
+					<td>42</td>
+					<td>42</td>
+					<td>100 %</td>
+					<td>38</td>
+					<td>7</td>
+					<td>18.42 %</td>
+					<td>26</td>
+					<td>68.42 %</td>
+					<td>32</td>
+					<td>35</td>
+					<td>31</td>
+					<td>28</td>
+					<td>26</td>
+					<td>0</td>
+				</tr>
+							<tr data-iid="VETWR" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="KT_Abroad">KT_Abroad</td>
+					<td class="align_l" title="PCweb">PCweb</td>
+					<td class="align_l" title="PC_gy">PC_gy</td>
+					<td>2</td>
+					<td>2</td>
+					<td>100 %</td>
+					<td>2</td>
+					<td>0</td>
+					<td>- %</td>
+					<td>2</td>
+					<td>100 %</td>
+					<td>2</td>
+					<td>2</td>
+					<td>2</td>
+					<td>2</td>
+					<td>2</td>
+					<td>0</td>
+				</tr>
+							<tr data-iid="YANPJ" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="KT_Abroad">KT_Abroad</td>
+					<td class="align_l" title="PCweb">PCweb</td>
+					<td class="align_l" title="PC_my">PC_my</td>
+					<td>33</td>
+					<td>33</td>
+					<td>100 %</td>
+					<td>16</td>
+					<td>0</td>
+					<td>- %</td>
+					<td>4</td>
+					<td>25 %</td>
+					<td>4</td>
+					<td>6</td>
+					<td>5</td>
+					<td>4</td>
+					<td>4</td>
+					<td>0</td>
+				</tr>
+							<tr data-iid="CKDNB" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="KT_Abroad">KT_Abroad</td>
+					<td class="align_l" title="PCweb">PCweb</td>
+					<td class="align_l" title="PC_sh">PC_sh</td>
+					<td>10</td>
+					<td>10</td>
+					<td>100 %</td>
+					<td>7</td>
+					<td>1</td>
+					<td>14.29 %</td>
+					<td>1</td>
+					<td>14.29 %</td>
+					<td>2</td>
+					<td>3</td>
+					<td>3</td>
+					<td>2</td>
+					<td>1</td>
+					<td>0</td>
+				</tr>
+							<tr data-iid="C2" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="SBS">SBS</td>
+					<td class="align_l" title="Samsung">Samsung</td>
+					<td class="align_l" title="SBS_samsung_APP">SBS_samsung_APP</td>
+					<td>436,291</td>
+					<td>436,291</td>
+					<td>100 %</td>
+					<td>412,128</td>
+					<td>1,382</td>
+					<td>0.34 %</td>
+					<td>274,431</td>
+					<td>66.59 %</td>
+					<td>275,000</td>
+					<td>300,653</td>
+					<td>167,701</td>
+					<td>48,529</td>
+					<td>35,190</td>
+					<td>356,691</td>
+				</tr>
+							<tr data-iid="KHLOC" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="VRiX Sample">VRiX Sample</td>
+					<td class="align_l" title="VRiX Media (PC.WEB)">VRiX Media (PC.WEB)</td>
+					<td class="align_l" title="VRiX Section">VRiX Section</td>
+					<td>-</td>
+					<td>-</td>
+					<td>- %</td>
+					<td>-</td>
+					<td>-</td>
+					<td>- %</td>
+					<td>-</td>
+					<td>- %</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+				</tr>
+							<tr data-iid="UXMIP" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="네이버">네이버</td>
+					<td class="align_l" title="M.WEB">M.WEB</td>
+					<td class="align_l" title="네이버TV_M.Web">네이버TV_M.Web</td>
+					<td>-</td>
+					<td>-</td>
+					<td>- %</td>
+					<td>-</td>
+					<td>-</td>
+					<td>- %</td>
+					<td>-</td>
+					<td>- %</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+				</tr>
+							<tr data-iid="NYHLJ" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="네이버">네이버</td>
+					<td class="align_l" title="PC.WEB">PC.WEB</td>
+					<td class="align_l" title="네이버TV_PC.Web">네이버TV_PC.Web</td>
+					<td>-</td>
+					<td>-</td>
+					<td>- %</td>
+					<td>-</td>
+					<td>-</td>
+					<td>- %</td>
+					<td>-</td>
+					<td>- %</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+				</tr>
+							<tr data-iid="HPNRA" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="셀럽티비">셀럽티비</td>
+					<td class="align_l" title="APP_Android">APP_Android</td>
+					<td class="align_l" title="셀럽티비_APP.Android">셀럽티비_APP.Android</td>
+					<td>5</td>
+					<td>5</td>
+					<td>100 %</td>
+					<td>5</td>
+					<td>1</td>
+					<td>20 %</td>
+					<td>2</td>
+					<td>40 %</td>
+					<td>3</td>
+					<td>2</td>
+					<td>2</td>
+					<td>0</td>
+					<td>0</td>
+					<td>3</td>
+				</tr>
+							<tr data-iid="ELWAU" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="셀럽티비">셀럽티비</td>
+					<td class="align_l" title="APP_iOS">APP_iOS</td>
+					<td class="align_l" title="셀럽티비_APP.iOS">셀럽티비_APP.iOS</td>
+					<td>-</td>
+					<td>-</td>
+					<td>- %</td>
+					<td>-</td>
+					<td>-</td>
+					<td>- %</td>
+					<td>-</td>
+					<td>- %</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+				</tr>
+							<tr data-iid="APKOV" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="셀럽티비">셀럽티비</td>
+					<td class="align_l" title="M.WEB">M.WEB</td>
+					<td class="align_l" title="셀럽티비_M.Web">셀럽티비_M.Web</td>
+					<td>1,202</td>
+					<td>1,202</td>
+					<td>100 %</td>
+					<td>1,033</td>
+					<td>184</td>
+					<td>17.81 %</td>
+					<td>682</td>
+					<td>66.02 %</td>
+					<td>746</td>
+					<td>749</td>
+					<td>561</td>
+					<td>212</td>
+					<td>138</td>
+					<td>645</td>
+				</tr>
+							<tr data-iid="IENDK" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="셀럽티비">셀럽티비</td>
+					<td class="align_l" title="PC.WEB">PC.WEB</td>
+					<td class="align_l" title="셀럽티비_PC.Web">셀럽티비_PC.Web</td>
+					<td>1,068</td>
+					<td>1,068</td>
+					<td>100 %</td>
+					<td>983</td>
+					<td>42</td>
+					<td>4.27 %</td>
+					<td>567</td>
+					<td>57.68 %</td>
+					<td>584</td>
+					<td>665</td>
+					<td>463</td>
+					<td>192</td>
+					<td>144</td>
+					<td>511</td>
+				</tr>
+							<tr data-iid="C21" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="시냅스게임즈">시냅스게임즈</td>
+					<td class="align_l" title="MobileWeb">MobileWeb</td>
+					<td class="align_l" title="그린볼트">그린볼트</td>
+					<td>-</td>
+					<td>-</td>
+					<td>- %</td>
+					<td>-</td>
+					<td>-</td>
+					<td>- %</td>
+					<td>-</td>
+					<td>- %</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+				</tr>
+							<tr data-iid="PAVYZ" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="시냅스엠">시냅스엠</td>
+					<td class="align_l" title="M_WEB">M_WEB</td>
+					<td class="align_l" title="엠군_MobileWeb">엠군_MobileWeb</td>
+					<td>-</td>
+					<td>-</td>
+					<td>- %</td>
+					<td>-</td>
+					<td>-</td>
+					<td>- %</td>
+					<td>-</td>
+					<td>- %</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+				</tr>
+							<tr data-iid="YBXJQ" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="시냅스엠">시냅스엠</td>
+					<td class="align_l" title="PC_WEB">PC_WEB</td>
+					<td class="align_l" title="엠군_PcWeb">엠군_PcWeb</td>
+					<td>180,204</td>
+					<td>131,929</td>
+					<td>73.21 %</td>
+					<td>124,548</td>
+					<td>12,807</td>
+					<td>10.28 %</td>
+					<td>58,038</td>
+					<td>46.6 %</td>
+					<td>63,866</td>
+					<td>81,910</td>
+					<td>57,729</td>
+					<td>45,060</td>
+					<td>40,798</td>
+					<td>65,896</td>
+				</tr>
+							<tr data-iid="C15" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="아프리카TV">아프리카TV</td>
+					<td class="align_l" title="아프리카TV">아프리카TV</td>
+					<td class="align_l" title="LIVE">LIVE</td>
+					<td>7,331,457</td>
+					<td>2,330,738</td>
+					<td>31.79 %</td>
+					<td>1,900,612</td>
+					<td>14,817</td>
+					<td>0.78 %</td>
+					<td>753,071</td>
+					<td>39.62 %</td>
+					<td>766,787</td>
+					<td>933,615</td>
+					<td>671,688</td>
+					<td>353,736</td>
+					<td>315,163</td>
+					<td>1,290,062</td>
+				</tr>
+							<tr data-iid="C14" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="아프리카TV">아프리카TV</td>
+					<td class="align_l" title="아프리카TV">아프리카TV</td>
+					<td class="align_l" title="VOD">VOD</td>
+					<td>1,112,790</td>
+					<td>445,888</td>
+					<td>40.07 %</td>
+					<td>384,270</td>
+					<td>10,308</td>
+					<td>2.68 %</td>
+					<td>159,553</td>
+					<td>41.52 %</td>
+					<td>169,270</td>
+					<td>197,623</td>
+					<td>139,813</td>
+					<td>73,170</td>
+					<td>64,421</td>
+					<td>234,409</td>
+				</tr>
+							<tr data-iid="VIFGH" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="한국경제TV">한국경제TV</td>
+					<td class="align_l" title="한국경제TV(M.WEB)">한국경제TV(M.WEB)</td>
+					<td class="align_l" title="한국경제TV(M.WEB)">한국경제TV(M.WEB)</td>
+					<td>-</td>
+					<td>-</td>
+					<td>- %</td>
+					<td>-</td>
+					<td>-</td>
+					<td>- %</td>
+					<td>-</td>
+					<td>- %</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+				</tr>
+							<tr data-iid="UNNRQ" class="invenList" style="cursor:pointer;">
+					<td class="align_l" title="한국경제TV">한국경제TV</td>
+					<td class="align_l" title="한국경제TV(PC.WEB)">한국경제TV(PC.WEB)</td>
+					<td class="align_l" title="한국경제TV(PC.WEB)">한국경제TV(PC.WEB)</td>
+					<td>-</td>
+					<td>-</td>
+					<td>- %</td>
+					<td>-</td>
+					<td>-</td>
+					<td>- %</td>
+					<td>-</td>
+					<td>- %</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+				</tr>
+						</tbody>
+		</table>
+
+	</div>
+</div>
+
+
+
+
+					</div>
+				</div>
+			</section>
+
+
+		</div>
+		<!-- E: content -->
+	</div>
+</body>
+</html>
