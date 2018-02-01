@@ -2,33 +2,42 @@
 <!doctype html>
 <html lang="ko">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1,maximum-scale=1,user-scalable=no">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="description" content="">
-<title>고수현 포트폴리오</title>
-<!--[if lt IE 9]><script src="http://gosh13.dothome.co.kr/portfolio/front/js/html5shim-trunk-html5.js"></script><![endif]-->
-<link rel="shortcut icon" type="image/x-icon" href="http://gosh13.dothome.co.kr/portfolio/front/images/common/logo.ico">
-<link rel="stylesheet" href="../css/style.css">
-<link rel="stylesheet" href="http://gosh13.dothome.co.kr/portfolio/front/css/font-awesome.min.css">
-<meta property="og:title" content="웹 퍼블리셔 고수현 포트폴리오">
-<meta property="og:url" content="/index.html">
-<meta property="og:description" content="웹 퍼블리셔 고수현입니다. 고수현 포트폴리오 페이지 입니다.">
-<meta property="og:image" content="">
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1,maximum-scale=1,user-scalable=no">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="description" content="">
+	<title>고수현 포트폴리오</title>
+	<meta name="description" content="Web publisher 고수현 포트폴리오 사이트입니다.">
+	<meta name="keywords" content="웹퍼블리셔, 퍼블리셔, 포트폴리오">
+	<!--[if lt IE 9]><script src="http://gosh13.dothome.co.kr/portfolio/front/js/html5shim-trunk-html5.js"></script><![endif]-->
+	<link rel="shortcut icon" type="image/x-icon" href="http://gosh13.dothome.co.kr/portfolio/front/images/common/logo.ico">
+	<link rel="stylesheet" href="../css/style.css">
+	<link rel="stylesheet" href="http://gosh13.dothome.co.kr/portfolio/front/css/font-awesome.min.css">
+	<meta property="og:title" content="웹 퍼블리셔 고수현 포트폴리오">
+	<meta property="og:url" content="/index.html">
+	<meta property="og:site_name" content="고수현 포트폴리오">
+	<meta property="og:description" content="웹 퍼블리셔 고수현입니다. 고수현 포트폴리오 페이지 입니다.">
+	<meta property="og:image" content="">
 </head>
 <body>
-	<div id="skipNav">
-		<a href="#container" class="blind">본문 바로가기</a>
-	</div>
+	<aside id="skipNav"><a href="#container" class="blind">본문 바로가기</a></aside>
+	<aside class="visual">
+		<div class="wrap">
+			<img src="" alt="" class="img1">
+			<img src="" alt="" class="img2">
+			<img src="" alt="" class="img3">
+		</div>
+	</aside>
 	<header class="header">
-		<h1>고수현 포트폴리오</h1>
+		<!-- <h1>고수현 포트폴리오</h1> -->
 		<nav class="nav">
-			<div class="nav__item"><a href="#"><span>item1</span></a></div>
-			<div class="nav__item"><a href="#"><span>item2</span></a></div>
-			<div class="nav__item"><a href="#"><span>item3</span></a></div>
+			<div class="nav__item"><a href="#"><span>Intro</span></a></div>
+			<div class="nav__item"><a href="#"><span>Skill</span></a></div>
+			<div class="nav__item"><a href="#"><span>Protfolio</span></a></div>
 			<div class="nav__item"><a href="#"><span>item4</span></a></div>
 		</nav>
 	</header>
+		
 	<section class="container">
 		<article class="portfolio">
 			<h1>portfolio</h1>
@@ -62,7 +71,7 @@
 <script src="/js/script.js"></script>
 <script>
 	$(function () {
-		$('.rate').each(function(){
+		$('.portfolio__rate').each(function(){
 			var $this = $(this);
 			var $no = $this.find('.rate__no').text();
 			$this.find('.bar').animate({ 'stroke-dashoffset': 295 - (295 * $no / 100) }, 1500);

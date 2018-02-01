@@ -135,7 +135,7 @@ var theadFloat = function () {
 				$fixTarget.find('.td_list').remove();
 				newListTd = '';
 			} else { // 처음 세팅시
-				$fixTarget.append('<div class="new_list"></div>');
+				$fixTarget.append('<div class="new_list" aria-hidden="true"></div>');
 				newListTh = '<ul class="th_list">' + th_list + '</ul>';
 				$fixTarget.wrap('<div class="js-tableThFixWrap">');
 			}
